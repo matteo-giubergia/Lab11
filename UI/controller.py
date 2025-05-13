@@ -11,11 +11,25 @@ class Controller:
         self._listColor = []
 
     def fillDD(self):
-        pass
+        for anno in self._model.anni:
+            self._view._ddyear.options.append(ft.dropdown.Option(anno))
+
+        for color in self._model.colori:
+            self._view._ddcolor.options.append(ft.dropdown.Option(color))
+
+        
 
 
     def handle_graph(self, e):
-        pass
+        color = self._view._ddcolor.value
+        print(color)
+        anno = self._view._ddyear.value
+        print(anno)
+        self._view.txtOut.controls.clear()
+        self._model.buildGraph(color, anno)
+        self._view.txtOut.controls.append(ft.Text("grafo creato"))
+        self._view.txtOut.controls.append(ft.Text(f"il grafo ha {self._model.numNodes()} nodi e {self._model.numArchi()} archi"))
+        self._view.update_page()
 
 
 
