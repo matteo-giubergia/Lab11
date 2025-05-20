@@ -18,7 +18,6 @@ class DAO():
         cursor.execute(query)
 
         for row in cursor:
-            print(row['anno'])
             res.append(row['anno'])
 
         cursor.close()
@@ -69,7 +68,7 @@ class DAO():
         cursor = conn.cursor(dictionary=True)
         res = []
 
-        query = """select g1.Product_number as p1, g2.Product_number as p2
+        query = """select g1.Product_number as p1, g2.Product_number as p2, count(distinct g1.`Date`) as peso
                     from (select Product_number  
                             from go_products gp 	
                             where gp.Product_color =%s) as prod1,
@@ -88,7 +87,7 @@ class DAO():
         cursor.execute(query, (color, color2, anno))
 
         for row in cursor:
-            res.append((idMap[row['p1']], idMap[row['p2']]))
+            res.append((idMap[row['p1']], idMap[row['p2']], row['peso']))
 
         cursor.close()
         conn.close()

@@ -22,20 +22,30 @@ class Controller:
 
     def handle_graph(self, e):
         color = self._view._ddcolor.value
-        print(color)
         anno = self._view._ddyear.value
-        print(anno)
         self._view.txtOut.controls.clear()
         self._model.buildGraph(color, anno)
         self._view.txtOut.controls.append(ft.Text("grafo creato"))
         self._view.txtOut.controls.append(ft.Text(f"il grafo ha {self._model.numNodes()} nodi e {self._model.numArchi()} archi"))
+        for arco in self._model.ordinaArchi():
+            self._view.txtOut.controls.append(ft.Text(f"arco da {arco[0].Product_number} a {arco[1].Product_number}, peso = {arco[2]}"))
+        self._view.txtOut.controls.append(ft.Text(f"nodi ripetuti: {self._model.nodiRipetuti()}"))
+        self._view.update_page()
+
+        # riempio il secondo dd
+        self.fillDDProduct()
         self._view.update_page()
 
 
 
     def fillDDProduct(self):
-        pass
+        for node in self._model._grafo.nodes:
+            self._view._ddnode.options.append(ft.dropdown.Option(key=node.Product_number, text = node.Product_number))
 
 
     def handle_search(self, e):
-        pass
+        self._view.txtOut2.controls.clear()
+        product_number = self._view._ddnode.value
+
+        self._view.txtOut2.controls.append(ft.Text(f"Numero archi percorso piu lungo: {self._model.percorso(int(product_number))-1}"))
+        self._view.update_page()
